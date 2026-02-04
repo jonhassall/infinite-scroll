@@ -1230,7 +1230,7 @@ proto.createHistoryAppend = function() {
   this.scrollPage = this.scrollPages[0];
   // events
   this.scrollHistoryHandler = this.onScrollHistory.bind( this );
-  this.pagehideHandler = this.onPagehide.bind( this );
+  this.unloadHandler = this.onUnload.bind( this );
   this.scroller.addEventListener( 'scroll', this.scrollHistoryHandler );
   this.on( 'append', this.onAppendHistory );
   this.bindHistoryAppendEvents( true );
@@ -1239,7 +1239,7 @@ proto.createHistoryAppend = function() {
 proto.bindHistoryAppendEvents = function( isBind ) {
   let addRemove = isBind ? 'addEventListener' : 'removeEventListener';
   this.scroller[ addRemove ]( 'scroll', this.scrollHistoryHandler );
-  window[ addRemove ]( 'pagehide', this.pagehideHandler );
+  window[ addRemove ]( 'unload', this.unloadHandler );
 };
 
 proto.createHistoryPageLoad = function() {
@@ -1322,7 +1322,7 @@ proto.setHistory = function( title, path ) {
 
 // scroll to top to prevent initial scroll-reset after page refresh
 // https://stackoverflow.com/a/18633915/182183
-proto.onPagehide = function() {
+proto.onUnload = function() {
   if ( this.scrollPage.top === 0 ) return;
 
   // calculate where scroll position would be on refresh
